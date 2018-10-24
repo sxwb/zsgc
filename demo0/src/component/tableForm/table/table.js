@@ -3,12 +3,19 @@ import { lookup } from '@/utils/tools';
 import { log } from 'util';
 export default (WrapTableForm) => {
     return class newTable extends React.Component {
-        componentDidMount(){
+        componentDidMount() {
             const { dispatch } = this.props;
-            const model=this.props.model;
+            const model = this.props.model;
             dispatch({
                 type: this.props.model + '/init'
-            })            
+            })
+        }
+        getdata(){
+            const { ids } = this.props[this.props.model];
+            const dataTree = 'res_' + this.props.model;
+            const data = this.props.odooData[dataTree];
+            const dataSource = lookup(ids, data);
+            return dataSource
         }
         handleDelete = (id) => {
             this.props.dispatch({
@@ -23,11 +30,11 @@ export default (WrapTableForm) => {
             })
         }
         handleRemove() {
-            
+            const { selectedRowKeys: ids } = this.props[this.props.model]
             const { dispatch } = this.props;
             dispatch({
-                type: this.props.model +'/queryBySmallId',
-                payload: { id: 0 }
+                type: this.props.model + '/moreDelete',
+                payload: { ids: ids }
             })
         }
         changeVisible() {
@@ -35,7 +42,7 @@ export default (WrapTableForm) => {
                 type: this.props.model + '/changeVisible'
             })
         }
-        edit=(record)=>{
+        edit = (record) => {
             this.props.dispatch({
                 type: this.props.model + '/changeVisible',
                 record
@@ -43,10 +50,12 @@ export default (WrapTableForm) => {
         }
         editChange(newEdit) {
             const { ids } = this.props[this.props.model];
-            const { res_group } = this.props.odooData;
-            const dataSource = lookup(ids, res_group);
-            const index = dataSource.findIndex(item => newEdit.key === item.key);
+            const dataTree = 'res_' + this.props.model;
+            const data = this.props.odooData[dataTree];
+            const dataSource = lookup(ids, data);
+            const index = dataSource.findIndex(item => newEdit.id === item.id);
             if (index > -1) {
+                alert(1)
                 this.props.dispatch({
                     type: this.props.model + '/rename',
                     payload: { id: newEdit.id, vals: newEdit }
@@ -67,7 +76,7 @@ export default (WrapTableForm) => {
             }
         }
         searchValueChange(value) {
-            const model=this.props.model
+            const model = this.props.model
             const searchData = this.props[model].dataSource.map((item) => item.gameid).filter((item) => item.indexOf(value) >= 0)
             this.props.dispatch({
                 type: this.props.model + '/searchData',
@@ -75,7 +84,7 @@ export default (WrapTableForm) => {
             })
         }
         search(value) {//.ant-select-dropdown-hidden控制是否显示
-            const model=this.props.model
+            const model = this.props.model
             const searchData = this.props.model.searchData
             var dataSource = this.props.model.dataSource.concat()
             if (searchData.length > 0) {
@@ -96,13 +105,13 @@ export default (WrapTableForm) => {
                 onSelectChange: this.onSelectChange,
                 handleRemove: this.handleRemove,
                 changeVisible: this.changeVisible,
-                edit:this.edit,
-                editChange:this.editChange,
-                searchValueChange:this.searchValueChange,
-                search:this.search,
+                edit: this.edit,
+                editChange: this.editChange,
+                searchValueChange: this.searchValueChange,
+                search: this.search,
             }
             return (
-                <WrapTableForm {...this.props} {...methods}/>
+                <WrapTableForm {...this.props} {...methods} />
             )
         }
     }

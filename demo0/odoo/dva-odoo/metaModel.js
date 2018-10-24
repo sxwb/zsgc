@@ -92,7 +92,9 @@ const dvaModel = ({ model, namespace, fields: out_fields, odooCall, api }) => {
         const token = yield select(state => state.login.sid);
         const response = yield api.create(token, payload);
         const { result, error } = response;
-
+        console.log('====================================');
+        console.log(result);
+        console.log('====================================');
         if (result) {
           yield put({
             type: 'odooData/update',
@@ -104,7 +106,9 @@ const dvaModel = ({ model, namespace, fields: out_fields, odooCall, api }) => {
 
       *unlink({ payload }, { call, put, select }) {
         const token = yield select(state => state.login.sid);
-        
+        console.log('====================================');
+        console.log(1);
+        console.log('====================================');
         const response = yield api.unlink(token, payload);
         const { result, error } = response;
         if (result) {
@@ -138,7 +142,7 @@ const dvaModel = ({ model, namespace, fields: out_fields, odooCall, api }) => {
       remove(state, { payload }) {
         const { ids: oids, id: oid } = state;
         const { id: pid } = payload;
-        const ids = oids.filter(i => i != pid);
+        const ids = oids.filter(i => i !== pid);
         const id = oid !== pid ? oid : 0;
         return { ...state, ids, id };
       },

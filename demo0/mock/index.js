@@ -20,14 +20,14 @@ import dvaOdooMockCrm from './dva-odoo-mock-crm';
 
 //TBD: dynamic import all file in mock path
 import contact from './contact';
-import groupgames from './groupgames'
+import groupgames from './zsgc'
 import login from './login';
 // 2018-9-18
 
 const mockData = {
   contact: contact(),
   login: login(),
-  groupgames:groupgames(),
+  zsgc:groupgames(),
   inherits: { ...dvaOdooMockCrm },
 };
 

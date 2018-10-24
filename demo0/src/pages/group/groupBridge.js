@@ -44,7 +44,7 @@ class a extends Component {
             <TableForm
                 list={list}
                 columns={columns}
-                model={"groupgames"}
+                model={"zsgc"}
                 formAddTitle={'添加小组'}
                 addTitle={'添加组'}
                 formEditTitle={'编辑组'}
@@ -52,5 +52,5 @@ class a extends Component {
         )
     }
 }
-export default connect(({ login, odooData, groupgames }) => ({ login, odooData, groupgames }))(a)
+export default connect(({ login, odooData, zsgc }) => ({ login, odooData, zsgc }))(a)
 // export default connect(({contactsList})=>({contactsList}))(Contacts)

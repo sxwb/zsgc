@@ -46,15 +46,9 @@ const apiCreator = (options) => {
 
     for (const fld of fields){
       const reference_read = reference[fld]
-
       const one2many_ids = (data) => {
-        console.log(data)
         const ids0 = data.map( item=> item[fld] ? item[fld] : [])
-
-        console.log(fld, ids0)
-
         const ids1 = [].concat.apply([], ids0 )
-        console.log(ids1)
         return Array.from(new Set(ids1))
       }
 
@@ -95,6 +89,7 @@ const apiCreator = (options) => {
   };
 
   const search = async (token, params) => {
+    
     const { context } = getContext( params, 'searchRead' )
     const {domain, fields = default_fields} = params
     const method = 'search_read';
@@ -107,22 +102,19 @@ const apiCreator = (options) => {
     if(result){
         const ref_res = await ref_read(token, fields, result)
         const result2 = {...ref_res, [model]:result}
-
-//        console.log(result,ref_res)
-
         return {result: result2, error}
-    }
+    } 
     return { result, error };
   };
 
   const read = async (token, params) => {
-    const { context } = getContext( params, 'read' )
+    const { context } = getContext( params, 'read' )//mock文件名
     const {id, fields = default_fields} = params
     const method = 'read';
     const response = await odooCall(token, {
-      model, method,
-      args: [id, fields],
-      kwargs: { context },
+      model, method,//模型方法
+      args: [id, fields],//附加参数
+      kwargs: { context },//mock文件参数
     });
     const { result, error } = response;
 

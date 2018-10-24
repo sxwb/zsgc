@@ -9,7 +9,9 @@ export  function lookup(ids = [], data = {}) {
   } else {
       data[ids] ? list.push({...data[ids],key:ids}) : null
   }
-
+  console.log('====================================');
+  console.log(list);
+  console.log('====================================');
   return [...list]
 }
 

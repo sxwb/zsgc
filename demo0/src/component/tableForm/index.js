@@ -17,13 +17,17 @@ class Tables extends Component {
         const { selectedRowKeys, searchData, allowClear, edit, visible, } = this.props[this.model];
         const { columns } = this.props;
         const { ids } = this.props[this.model];
-        const { res_partner } = this.props.odooData;
-        const dataSource = lookup(ids, res_partner);
+        const dataTree = 'res_' + this.model;
+        const data = this.props.odooData[dataTree];
+        console.log('====================================');
+        console.log(dataTree);
+        console.log('====================================');
+        const dataSource = lookup(ids, data);
         const rowSelection = {
             selectedRowKeys,
             onChange: this.props.onSelectChange.bind(this),
         };
-        
+
         const pagination = {
             pageSize: 6,
             showQuickJumper: true,
@@ -45,9 +49,9 @@ class Tables extends Component {
                                         <Popconfirm title="确认删除？" onConfirm={() => this.props.handleDelete(record.id)}>
                                             <a href="javascript:;" style={{ marginRight: '10px' }}>删除</a>
                                         </Popconfirm>
-                                        <a href="javascript:;" onClick={()=>this.props.edit(record)} style={{ marginRight: '10px' }}>编辑</a>
+                                        <a href="javascript:;" onClick={() => this.props.edit(record)} style={{ marginRight: '10px' }}>编辑</a>
                                     </> : null}
-                                {item.render(text,record,this)}
+                                {item.render(text, record, this)}
                             </div>
                         )
                     },

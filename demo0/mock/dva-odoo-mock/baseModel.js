@@ -8,7 +8,7 @@ const apiCreator = records => {
   const read = (id, fields) => {
     if (typeof id === 'number') {
       return [records[id]];
-    }
+    }    
     return id.map(item => records[item]);
   };
 
@@ -51,7 +51,6 @@ const apiCreator = records => {
 
   return { search, read, create, write, unlink, searchRead, nameCreate };
 };
-
 export default ({ records: records0 }) => {
   const records = records0 ? records0 : my_records;
   const api = apiCreator(records);

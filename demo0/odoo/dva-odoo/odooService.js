@@ -1,5 +1,5 @@
 //服务器请求方法函数
-const jsonrpc = params => {
+const jsonrpc = params => {//请求参数格式
 	return {
 		method: 'POST',
 		body: {
@@ -50,7 +50,6 @@ export default service => {
 	}
 
 	const req = proxy ? mockRequest : request;
-
 	const login = async params => {
 		const { url, db } = service.login;
 		return await req(url, jsonrpc({ ...params, db }));

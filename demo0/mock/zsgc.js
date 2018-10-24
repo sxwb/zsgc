@@ -82,10 +82,19 @@ const extend = ({ records }) => {
         create: (vals) => {
             const ids1 = Object.keys(records).map(i => parseInt(i))
             const ids = ids1.length ? ids1 : [0]
+            
             const id = Math.max(...ids) + 1;
+            if(ids.indexOf(id)>-1){
+                return
+            }
             records[id] = { id, ...vals }
             return id
         },
+        moreDelete:(ids)=>{
+            ids.forEach(element => {
+               this.unlink(element); 
+            });           
+        }
     }
 }
 export default () => {

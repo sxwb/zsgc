@@ -1,14 +1,13 @@
-import groupdata from '../groupdata'
 import service from '@/services/odooService';
-import dvaOdoo from '../../../../odoo/dva-odoo';
-import dvaOdooCrm from '../../../../odoo/dva-odoo-crm';
+import dvaOdoo from '../../odoo/dva-odoo';
+import dvaOdooCrm from '../../odoo/dva-odoo-crm';
 import { delay } from 'dva/saga'
 import { log } from 'util';
 const dvaModel = ({ namespace, model, api }) => {
     return {
         namespace,
         state: {
-            dataSource: groupdata,       //数据源
+            dataSource: [],       //数据源
             selectedRowKeys: [],    //删除选中的key
             visible: false,         //弹出表单
             edit: {},               //新建或编辑
@@ -56,6 +55,20 @@ const dvaModel = ({ namespace, model, api }) => {
                 });
 
             },
+            *moreDelete({ payload }, { call, put, select }) {
+                const { ids } = payload;
+                for (let index = 0; index < ids.length; index++) {
+                    const id = ids[index];
+                    yield put({
+                        type:'unlink',
+                        payload:{id:id}
+                    })
+                    
+                }
+            },
+            *querySingle({payload},{call,select,put}){
+                
+            }
         },
         reducers: {
             /*delOne(state, { key }) {
@@ -110,7 +123,7 @@ const fields = {
     one2many: {
         child_ids: {
             model: 'res.partner',
-            namespace: 'contact',
+            namespace: 'zsgc',
             fields: { default: ['name'] },
             domain: [],
         },
@@ -126,11 +139,14 @@ const fields = {
 }
 
 const contact = {
-    model: 'res_partner',//数据保存在odoodata的模型分之
-    namespace: 'groupgames',//命名空间。state分支
+    model: 'res_zsgc',//数据保存在odoodata的模型分之
+    namespace: 'zsgc',//命名空间。state分支
     inherit: 'res_partner.groupgames',//继承分支选择，odooData,login,
     service,//服务请求方法
     fields,//域
     dvaModel,//自有模型
 };
+console.log('====================================');
+console.log(dvaOdoo(contact));
+console.log('====================================');
 export default dvaOdoo(contact);
